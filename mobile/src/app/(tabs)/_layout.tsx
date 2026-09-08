@@ -1,6 +1,6 @@
 import { Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
-import { Colors } from "@/constants/colors";
+import { Colors, Shadows } from "@/constants/colors";
 
 export default function TabsLayout() {
   return (
@@ -10,16 +10,18 @@ export default function TabsLayout() {
         tabBarActiveTintColor: Colors.primary,
         tabBarInactiveTintColor: Colors.textSecondary,
         tabBarStyle: {
-          height: 70,
+          height: 72,
           paddingTop: 8,
-          paddingBottom: 8,
+          paddingBottom: 10,
           backgroundColor: Colors.surface,
           borderTopWidth: 1,
           borderTopColor: Colors.borderLight,
+          ...Shadows.sm,
         },
         tabBarLabelStyle: {
           fontSize: 11,
           fontWeight: "600",
+          letterSpacing: 0.2,
         },
       }}
     >
@@ -27,8 +29,8 @@ export default function TabsLayout() {
         name="index"
         options={{
           title: "Home",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home" size={size} color={color} />
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="home" size={22} color={color} />
           ),
         }}
       />
@@ -37,8 +39,8 @@ export default function TabsLayout() {
         name="children"
         options={{
           title: "Children",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="people" size={size} color={color} />
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="people" size={22} color={color} />
           ),
         }}
       />
@@ -47,8 +49,8 @@ export default function TabsLayout() {
         name="messages"
         options={{
           title: "Messages",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="chatbubble-ellipses" size={size} color={color} />
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="chatbubble-ellipses" size={22} color={color} />
           ),
         }}
       />
@@ -57,8 +59,8 @@ export default function TabsLayout() {
         name="notifications"
         options={{
           title: "Alerts",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="notifications" size={size} color={color} />
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="notifications" size={22} color={color} />
           ),
         }}
       />
@@ -67,8 +69,8 @@ export default function TabsLayout() {
         name="profile"
         options={{
           title: "Profile",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="person" size={size} color={color} />
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="person" size={22} color={color} />
           ),
         }}
       />
