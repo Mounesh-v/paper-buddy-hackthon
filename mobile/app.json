@@ -8,7 +8,12 @@
     "scheme": "parentapp",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "icon": "./assets/expo.icon",
+      "infoPlist": {
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true
+        }
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -18,7 +23,8 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "package": "com.mounesh_v.ParentApp"
+      "package": "com.mounesh_v.ParentApp",
+      "usesCleartextTraffic": true
     },
     "web": {
       "output": "static",
@@ -35,6 +41,9 @@
         }
       ]
     ],
+    "extra": {
+      "apiUrl": "http://192.168.0.108:8080/api/v1"
+    },
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
