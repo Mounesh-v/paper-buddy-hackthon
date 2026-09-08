@@ -156,7 +156,7 @@ export default function FeesScreen() {
                   <View style={styles.feeInfo}>
                     <Text style={styles.feeName}>{fee.name || fee.feeName || fee.category}</Text>
                     <Text style={styles.feePeriod}>
-                      {fee.period || fee.dueDate ? `Due: ${formatDate(fee.dueDate)}` : ''}
+                      {fee.period || fee.dueDate || fee.due_date ? `Due: ${formatDate(fee.dueDate || fee.due_date)}` : ''}
                     </Text>
                   </View>
                   <StatusBadge status={fee.status} />
@@ -167,10 +167,10 @@ export default function FeesScreen() {
                   <Text style={styles.amountValue}>{formatCurrency(fee.amount)}</Text>
                 </View>
 
-                {fee.paidDate && (
+                {(fee.paidDate || fee.paid_date) && (
                   <View style={styles.paidInfo}>
                     <Ionicons name="checkmark-circle" size={16} color={Colors.success} />
-                    <Text style={styles.paidText}>Paid on {formatDate(fee.paidDate)}</Text>
+                    <Text style={styles.paidText}>Paid on {formatDate(fee.paidDate || fee.paid_date)}</Text>
                   </View>
                 )}
               </Card>

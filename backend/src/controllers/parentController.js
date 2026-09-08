@@ -14,6 +14,39 @@ exports.getProfile = async (req, res, next) => {
   }
 };
 
+exports.updateProfile = async (req, res, next) => {
+  try {
+    const { name, phone_number } = req.body;
+    const updates = {};
+
+    if (name !== undefined) {
+      if (!name || !name.trim()) {
+        return error(res, 'Name cannot be empty.', 400);
+      }
+      updates.name = name.trim();
+    }
+
+    if (phone_number !== undefined) {
+      updates.phone_number = phone_number ? phone_number.trim() : null;
+    }
+
+    if (Object.keys(updates).length === 0) {
+      return error(res, 'No valid fields to update.', 400);
+    }
+
+    updates.updated_at = new Date();
+
+    const [updatedUser] = await db('users')
+      .where({ id: req.user.id })
+      .update(updates)
+      .returning(['id', 'name', 'email', 'phone_number', 'role', 'created_at']);
+
+    return success(res, updatedUser, 'Profile updated successfully');
+  } catch (err) {
+    next(err);
+  }
+};
+
 exports.getChildren = async (req, res, next) => {
   try {
     const children = await db('students')
@@ -100,8 +133,8 @@ exports.getDashboard = async (req, res, next) => {
     const academicsOverview = await db('exam_results')
       .where({ student_id: studentId })
       .select(
-        db.raw('AVG(marks_obtained * 100.0 / total_marks) as average'),
-        db.raw("MAX(marks_obtained * 100.0 / total_marks) as best_percentage")
+        db.raw('AVG(marks_obtained * 100.0 / NULLIF(total_marks, 0)) as average'),
+        db.raw("MAX(marks_obtained * 100.0 / NULLIF(total_marks, 0)) as best_percentage")
       )
       .first();
 
@@ -110,7 +143,7 @@ exports.getDashboard = async (req, res, next) => {
       .join('subjects', 'exam_results.subject_id', 'subjects.id')
       .where('exam_results.student_id', studentId)
       .select('subjects.name')
-      .orderByRaw('(marks_obtained * 100.0 / total_marks)', 'desc')
+      .orderByRaw('(exam_results.marks_obtained * 100.0 / NULLIF(exam_results.total_marks, 0)) DESC')
       .first();
 
     // Get fees summary
@@ -159,6 +192,15 @@ exports.getDashboard = async (req, res, next) => {
       .count('id as count')
       .first();
 
+    // Get unread messages count
+    const unreadMessages = await db('messages')
+      .join('conversation_participants', 'messages.conversation_id', 'conversation_participants.conversation_id')
+      .where('conversation_participants.user_id', req.user.id)
+      .where('messages.is_read', false)
+      .whereNot('messages.sender_id', req.user.id)
+      .count('messages.id as count')
+      .first();
+
     return success(res, {
       attendance: {
         percentage: parseFloat(attendanceSummary.percentage) || 0,
@@ -187,6 +229,7 @@ exports.getDashboard = async (req, res, next) => {
       upcomingEvents,
       recentAnnouncements,
       unreadNotifications: parseInt(unreadNotifications.count) || 0,
+      unreadMessages: parseInt(unreadMessages.count) || 0,
     });
   } catch (err) {
     next(err);

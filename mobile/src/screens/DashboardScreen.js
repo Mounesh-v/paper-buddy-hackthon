@@ -5,6 +5,7 @@ import {
   ScrollView,
   StyleSheet,
   RefreshControl,
+  TouchableOpacity,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -22,7 +23,7 @@ import { LoadingScreen } from '@/components/common/LoadingScreen';
 import { ErrorState } from '@/components/common/ErrorState';
 import { Card } from '@/components/ui/Card';
 import { Colors, Spacing, FontSize, BorderRadius } from '@/constants/colors';
-import { getInitials, getTimeAgo, formatCurrency } from '@/utils/helpers';
+import { getInitials, formatDate } from '@/utils/helpers';
 
 export default function DashboardScreen() {
   const router = useRouter();
@@ -57,12 +58,6 @@ export default function DashboardScreen() {
   useEffect(() => {
     loadDashboard();
   }, [loadDashboard]);
-
-  useEffect(() => {
-    if (activeChild) {
-      loadDashboard();
-    }
-  }, [activeChild]);
 
   const handleRefresh = () => {
     setIsRefreshing(true);
@@ -112,23 +107,47 @@ export default function DashboardScreen() {
             <Text style={styles.greetingText}>
               Hello, {user?.name?.split(' ')[0] || 'Parent'} 👋
             </Text>
-            <Text style={styles.subtitle}>Here's your child's overview</Text>
+            <Text style={styles.subtitle}>Here&apos;s your child&apos;s overview</Text>
           </View>
-          <View style={styles.notificationButton}>
-            <Ionicons
-              name="notifications-outline"
-              size={24}
-              color={Colors.text}
-            />
-            {dashboardData?.unreadNotifications > 0 && (
-              <View style={styles.notificationBadge}>
-                <Text style={styles.notificationCount}>
-                  {dashboardData.unreadNotifications > 99
-                    ? '99+'
-                    : dashboardData.unreadNotifications}
-                </Text>
-              </View>
-            )}
+          <View style={styles.headerActions}>
+            <TouchableOpacity
+              style={styles.iconButton}
+              onPress={() => router.push('/messages')}
+            >
+              <Ionicons
+                name="chatbubble-ellipses-outline"
+                size={22}
+                color={Colors.text}
+              />
+              {dashboardData?.unreadMessages > 0 && (
+                <View style={styles.iconBadge}>
+                  <Text style={styles.iconBadgeText}>
+                    {dashboardData.unreadMessages > 99
+                      ? '99+'
+                      : dashboardData.unreadMessages}
+                  </Text>
+                </View>
+              )}
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.iconButton}
+              onPress={() => router.push('/notifications')}
+            >
+              <Ionicons
+                name="notifications-outline"
+                size={22}
+                color={Colors.text}
+              />
+              {dashboardData?.unreadNotifications > 0 && (
+                <View style={styles.iconBadge}>
+                  <Text style={styles.iconBadgeText}>
+                    {dashboardData.unreadNotifications > 99
+                      ? '99+'
+                      : dashboardData.unreadNotifications}
+                  </Text>
+                </View>
+              )}
+            </TouchableOpacity>
           </View>
         </View>
 
@@ -209,7 +228,7 @@ export default function DashboardScreen() {
                     {event.title || event.name}
                   </Text>
                   <Text style={styles.eventDate}>
-                    {getTimeAgo(event.date || event.startDate)}
+                    {formatDate(event.date || event.startDate)}
                   </Text>
                 </View>
               </View>
@@ -232,7 +251,7 @@ export default function DashboardScreen() {
                   {item.title}
                 </Text>
                 <Text style={styles.announcementDate}>
-                  {getTimeAgo(item.publishDate || item.createdAt)}
+                  {formatDate(item.publishDate || item.createdAt || item.created_at)}
                 </Text>
               </View>
             ))}
@@ -273,11 +292,15 @@ const styles = StyleSheet.create({
     color: Colors.textSecondary,
     marginTop: 4,
   },
-  notificationButton: {
+  headerActions: {
+    flexDirection: 'row',
+    gap: Spacing.xs,
+  },
+  iconButton: {
     position: 'relative',
     padding: Spacing.sm,
   },
-  notificationBadge: {
+  iconBadge: {
     position: 'absolute',
     top: 2,
     right: 2,
@@ -289,7 +312,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 4,
   },
-  notificationCount: {
+  iconBadgeText: {
     color: Colors.white,
     fontSize: 10,
     fontWeight: '700',

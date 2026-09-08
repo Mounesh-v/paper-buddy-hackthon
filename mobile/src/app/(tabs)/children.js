@@ -99,9 +99,9 @@ export default function ChildrenScreen() {
                           {child.className || child.class || child.grade}
                           {child.section ? ` - ${child.section}` : ''}
                         </Text>
-                        {child.rollNumber && (
+                        {child.roll_number || child.rollNumber && (
                           <Text style={styles.rollNumber}>
-                            Roll #{child.rollNumber}
+                            Roll #{child.roll_number || child.rollNumber}
                           </Text>
                         )}
                       </View>

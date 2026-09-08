@@ -52,6 +52,23 @@ exports.getConversations = async (req, res, next) => {
   }
 };
 
+exports.getTeachers = async (req, res, next) => {
+  try {
+    const teachers = await db('student_subjects')
+      .join('students', 'student_subjects.student_id', 'students.id')
+      .join('parent_students', 'students.id', 'parent_students.student_id')
+      .join('users', 'student_subjects.teacher_id', 'users.id')
+      .where('parent_students.parent_id', req.user.id)
+      .where('users.role', 'TEACHER')
+      .select('users.id', 'users.name', 'users.email')
+      .distinct();
+
+    return success(res, teachers);
+  } catch (err) {
+    next(err);
+  }
+};
+
 exports.createConversation = async (req, res, next) => {
   try {
     const { participantIds, name } = req.body;

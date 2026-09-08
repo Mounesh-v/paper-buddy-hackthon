@@ -6,6 +6,8 @@ import {
   StyleSheet,
   RefreshControl,
   TouchableOpacity,
+  Modal,
+  Alert,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -17,16 +19,19 @@ import { ErrorState } from '@/components/common/ErrorState';
 import { EmptyState } from '@/components/common/EmptyState';
 import { Badge } from '@/components/ui/Badge';
 import { Colors, Spacing, FontSize, BorderRadius } from '@/constants/colors';
-import { getTimeAgo, getInitials, truncate } from '@/utils/helpers';
+import { getTimeAgo, getInitials } from '@/utils/helpers';
 
 export default function MessagesScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
 
   const [conversations, setConversations] = useState([]);
+  const [teachers, setTeachers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState(null);
+  const [composeVisible, setComposeVisible] = useState(false);
+  const [composeLoading, setComposeLoading] = useState(false);
 
   const loadData = useCallback(async () => {
     try {
@@ -44,6 +49,31 @@ export default function MessagesScreen() {
   useEffect(() => {
     loadData();
   }, [loadData]);
+
+  const openCompose = async () => {
+    setComposeVisible(true);
+    try {
+      const data = await messageService.getTeachers();
+      setTeachers(Array.isArray(data) ? data : []);
+    } catch {
+      setTeachers([]);
+    }
+  };
+
+  const handleStartConversation = async (teacher) => {
+    try {
+      setComposeLoading(true);
+      const conversation = await messageService.createConversation({
+        participantIds: [teacher.id],
+      });
+      setComposeVisible(false);
+      router.push(`/messages/${conversation.id}`);
+    } catch (err) {
+      Alert.alert('Error', err.message || 'Failed to start conversation.');
+    } finally {
+      setComposeLoading(false);
+    }
+  };
 
   const handleRefresh = () => {
     setIsRefreshing(true);
@@ -68,7 +98,7 @@ export default function MessagesScreen() {
             {item.name || item.teacherName || item.participantName}
           </Text>
           <Text style={styles.conversationTime}>
-            {getTimeAgo(item.lastMessage?.createdAt || item.updatedAt)}
+            {getTimeAgo(item.lastMessage?.createdAt || item.lastMessage?.created_at || item.updatedAt)}
           </Text>
         </View>
 
@@ -78,6 +108,26 @@ export default function MessagesScreen() {
       </View>
 
       {item.unreadCount > 0 && <Badge count={item.unreadCount} />}
+    </TouchableOpacity>
+  );
+
+  const renderTeacher = ({ item }) => (
+    <TouchableOpacity
+      style={styles.teacherItem}
+      onPress={() => handleStartConversation(item)}
+      activeOpacity={0.7}
+      disabled={composeLoading}
+    >
+      <View style={styles.teacherAvatar}>
+        <Text style={styles.teacherAvatarText}>{getInitials(item.name)}</Text>
+      </View>
+      <View style={styles.teacherInfo}>
+        <Text style={styles.teacherName}>{item.name}</Text>
+        <Text style={styles.teacherEmail} numberOfLines={1}>
+          {item.email}
+        </Text>
+      </View>
+      <Ionicons name="chatbubble-outline" size={22} color={Colors.primary} />
     </TouchableOpacity>
   );
 
@@ -94,7 +144,7 @@ export default function MessagesScreen() {
       <Header
         title="Messages"
         onBack={() => router.back()}
-        rightAction={() => {}}
+        rightAction={openCompose}
         rightIcon="create-outline"
       />
 
@@ -125,6 +175,48 @@ export default function MessagesScreen() {
           ItemSeparatorComponent={() => <View style={styles.separator} />}
         />
       )}
+
+      <Modal
+        visible={composeVisible}
+        transparent
+        animationType="slide"
+        onRequestClose={() => setComposeVisible(false)}
+      >
+        <TouchableOpacity
+          style={styles.modalOverlay}
+          activeOpacity={1}
+          onPress={() => setComposeVisible(false)}
+        >
+          <View style={styles.modalContent} onStartShouldSetResponder={() => true}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>New Message</Text>
+              <TouchableOpacity onPress={() => setComposeVisible(false)}>
+                <Ionicons name="close" size={24} color={Colors.text} />
+              </TouchableOpacity>
+            </View>
+
+            <Text style={styles.modalSubtitle}>
+              Select a teacher to start a conversation
+            </Text>
+
+            {teachers.length === 0 ? (
+              <EmptyState
+                title="No teachers available"
+                message="Teachers for your children will appear here."
+                icon="people-outline"
+              />
+            ) : (
+              <FlatList
+                data={teachers}
+                keyExtractor={(item, index) => (item.id || index).toString()}
+                renderItem={renderTeacher}
+                contentContainerStyle={styles.teacherList}
+                showsVerticalScrollIndicator={false}
+              />
+            )}
+          </View>
+        </TouchableOpacity>
+      </Modal>
     </View>
   );
 }
@@ -183,5 +275,73 @@ const styles = StyleSheet.create({
   },
   separator: {
     height: Spacing.sm,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: Colors.overlay,
+    justifyContent: 'flex-end',
+  },
+  modalContent: {
+    backgroundColor: Colors.surface,
+    borderTopLeftRadius: BorderRadius.xl,
+    borderTopRightRadius: BorderRadius.xl,
+    maxHeight: '70%',
+    paddingBottom: Spacing.xl,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: Spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.borderLight,
+  },
+  modalTitle: {
+    fontSize: FontSize.lg,
+    fontWeight: '700',
+    color: Colors.text,
+  },
+  modalSubtitle: {
+    fontSize: FontSize.sm,
+    color: Colors.textSecondary,
+    paddingHorizontal: Spacing.md,
+    paddingTop: Spacing.md,
+  },
+  teacherList: {
+    padding: Spacing.md,
+  },
+  teacherItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.md,
+    paddingVertical: Spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.borderLight,
+  },
+  teacherAvatar: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: Colors.surfaceVariant,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  teacherAvatarText: {
+    fontSize: FontSize.md,
+    fontWeight: '600',
+    color: Colors.primary,
+  },
+  teacherInfo: {
+    flex: 1,
+  },
+  teacherName: {
+    fontSize: FontSize.md,
+    fontWeight: '600',
+    color: Colors.text,
+  },
+  teacherEmail: {
+    fontSize: FontSize.sm,
+    color: Colors.textSecondary,
+    marginTop: 2,
   },
 });

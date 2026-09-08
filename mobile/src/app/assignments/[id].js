@@ -108,7 +108,7 @@ export default function AssignmentDetailScreen() {
               <View>
                 <Text style={styles.metaLabel}>Due Date</Text>
                 <Text style={styles.metaValue}>
-                  {formatDate(assignment.dueDate)}
+                  {formatDate(assignment.dueDate || assignment.due_date)}
                 </Text>
               </View>
             </View>
@@ -118,8 +118,8 @@ export default function AssignmentDetailScreen() {
               <View>
                 <Text style={styles.metaLabel}>Submitted</Text>
                 <Text style={styles.metaValue}>
-                  {assignment.submittedDate
-                    ? formatDate(assignment.submittedDate)
+                  {assignment.submittedDate || assignment.submitted_date
+                    ? formatDate(assignment.submittedDate || assignment.submitted_date)
                     : 'Not submitted'}
                 </Text>
               </View>
@@ -139,7 +139,7 @@ export default function AssignmentDetailScreen() {
             <Text style={styles.sectionTitle}>Marks</Text>
             <View style={styles.marksContainer}>
               <Text style={styles.marksValue}>
-                {assignment.marks}/{assignment.totalMarks || '-'}
+                {assignment.marks}/{assignment.totalMarks || assignment.total_marks || '-'}
               </Text>
               {assignment.grade && (
                 <Text style={styles.grade}>Grade: {assignment.grade}</Text>

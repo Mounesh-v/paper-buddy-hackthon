@@ -115,7 +115,7 @@ export default function PaymentsScreen() {
                     </Text>
                   </View>
                   <Text style={styles.paymentAmount}>
-                    {formatCurrency(payment.amount)}
+                    {formatCurrency(payment.amount || payment.paidAmount)}
                   </Text>
                 </View>
 

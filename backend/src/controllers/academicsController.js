@@ -18,7 +18,7 @@ exports.getAcademics = async (req, res, next) => {
     const overall = await db('exam_results')
       .where({ student_id: studentId })
       .select(
-        db.raw('AVG(marks_obtained * 100.0 / total_marks) as average'),
+        db.raw('AVG(marks_obtained * 100.0 / NULLIF(total_marks, 0)) as average'),
         db.raw('SUM(marks_obtained) as total_marks_obtained'),
         db.raw('SUM(total_marks) as total_possible'),
         db.raw('COUNT(DISTINCT exam_id) as exams_taken')

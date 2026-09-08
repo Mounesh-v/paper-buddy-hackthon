@@ -183,7 +183,7 @@ export default function AssignmentsScreen() {
                   <View style={styles.metaItem}>
                     <Ionicons name="calendar-outline" size={14} color={Colors.textMuted} />
                     <Text style={styles.metaText}>
-                      Due: {formatDate(assignment.dueDate)}
+                      Due: {formatDate(assignment.dueDate || assignment.due_date)}
                     </Text>
                   </View>
                 </View>
@@ -192,7 +192,7 @@ export default function AssignmentsScreen() {
                   <View style={styles.marksContainer}>
                     <Text style={styles.marksLabel}>Marks:</Text>
                     <Text style={styles.marksValue}>
-                      {assignment.marks}/{assignment.totalMarks || '-'}
+                      {assignment.marks}/{assignment.totalMarks || assignment.total_marks || '-'}
                     </Text>
                   </View>
                 )}

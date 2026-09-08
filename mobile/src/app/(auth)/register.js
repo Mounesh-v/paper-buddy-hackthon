@@ -22,6 +22,9 @@ export default function RegisterScreen() {
   const insets = useSafeAreaInsets();
   const { register, isLoading } = useAuth();
 
+  // Freeze the top offset so keyboard/system-inset changes never shift the layout.
+  const [topPadding] = useState(() => insets.top + 20);
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -81,12 +84,13 @@ export default function RegisterScreen() {
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      enabled={Platform.OS === 'ios'}
     >
       <ScrollView
         contentContainerStyle={[
           styles.scrollContent,
-          { paddingTop: insets.top + 20 },
+          { paddingTop: topPadding },
         ]}
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
@@ -155,6 +159,7 @@ export default function RegisterScreen() {
             <TouchableOpacity
               onPress={() => setShowPassword(!showPassword)}
               style={styles.showPassword}
+              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
             >
               <Ionicons
                 name={showPassword ? 'eye-off-outline' : 'eye-outline'}

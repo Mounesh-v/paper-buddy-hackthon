@@ -142,6 +142,11 @@ export const parentService = {
     return unwrap(response);
   },
 
+  async updateProfile(data) {
+    const response = await api.put('/parent/me', data);
+    return unwrap(response);
+  },
+
   async getChildren() {
     const response = await api.get('/parent/children');
     return unwrap(response);
@@ -262,6 +267,11 @@ export const notificationService = {
 export const messageService = {
   async getConversations() {
     const response = await api.get('/parent/conversations');
+    return unwrap(response);
+  },
+
+  async getTeachers() {
+    const response = await api.get('/parent/conversations/teachers');
     return unwrap(response);
   },
 

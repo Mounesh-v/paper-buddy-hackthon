@@ -1,4 +1,26 @@
-export const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL;
+import Constants from 'expo-constants';
+
+const getApiBaseUrl = () => {
+  if (process.env.EXPO_PUBLIC_API_URL) {
+    return process.env.EXPO_PUBLIC_API_URL;
+  }
+
+  // Derive the dev machine's host from the Metro/dev-server URI so physical
+  // devices and emulators can reach the backend without hardcoding an IP.
+  const hostUri =
+    Constants.expoConfig?.hostUri ||
+    Constants.manifest2?.extra?.expoClient?.hostUri ||
+    Constants.expoGoConfig?.debuggerHost;
+
+  const host = hostUri?.split(':')[0];
+  if (host) {
+    return `http://${host}:8080/api/v1`;
+  }
+
+  return 'http://localhost:8080/api/v1';
+};
+
+export const API_BASE_URL = getApiBaseUrl();
 
 export const API_TIMEOUT = 15000;
 

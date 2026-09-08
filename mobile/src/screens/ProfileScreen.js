@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -6,21 +6,32 @@ import {
   StyleSheet,
   TouchableOpacity,
   Alert,
+  Modal,
+  TextInput,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuth } from '@/hooks/useAuth';
 import { useChild } from '@/hooks/useChild';
+import { parentService } from '@/services/api';
 import { Card } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 import { Colors, Spacing, FontSize, BorderRadius } from '@/constants/colors';
 import { getInitials } from '@/utils/helpers';
 
 export default function ProfileScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { user, logout } = useAuth();
+  const { user, logout, setUser } = useAuth();
   const { children: childrenList, activeChild } = useChild();
+
+  const [editVisible, setEditVisible] = useState(false);
+  const [editName, setEditName] = useState('');
+  const [editPhone, setEditPhone] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
 
   const handleLogout = () => {
     Alert.alert('Logout', 'Are you sure you want to logout?', [
@@ -34,6 +45,34 @@ export default function ProfileScreen() {
         },
       },
     ]);
+  };
+
+  const openEditProfile = () => {
+    setEditName(user?.name || '');
+    setEditPhone(user?.phone_number || user?.phoneNumber || '');
+    setEditVisible(true);
+  };
+
+  const handleSaveProfile = async () => {
+    if (!editName.trim()) {
+      Alert.alert('Error', 'Name cannot be empty.');
+      return;
+    }
+
+    try {
+      setIsSaving(true);
+      const updated = await parentService.updateProfile({
+        name: editName.trim(),
+        phone_number: editPhone.trim() || null,
+      });
+      setUser(updated);
+      setEditVisible(false);
+      Alert.alert('Success', 'Profile updated successfully.');
+    } catch (err) {
+      Alert.alert('Error', err.message || 'Failed to update profile.');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const menuItems = [
@@ -84,10 +123,13 @@ export default function ProfileScreen() {
           <View style={styles.profileInfo}>
             <Text style={styles.name}>{user?.name || 'Parent User'}</Text>
             <Text style={styles.email}>{user?.email || 'parent@example.com'}</Text>
-            {user?.phoneNumber && (
-              <Text style={styles.phone}>{user.phoneNumber}</Text>
+            {(user?.phone_number || user?.phoneNumber) && (
+              <Text style={styles.phone}>{user.phone_number || user.phoneNumber}</Text>
             )}
           </View>
+          <TouchableOpacity style={styles.editButton} onPress={openEditProfile}>
+            <Ionicons name="create-outline" size={20} color={Colors.primary} />
+          </TouchableOpacity>
         </View>
 
         {activeChild && (
@@ -133,6 +175,69 @@ export default function ProfileScreen() {
       </TouchableOpacity>
 
       <Text style={styles.version}>Version 1.0.0</Text>
+
+      <Modal
+        visible={editVisible}
+        transparent
+        animationType="slide"
+        onRequestClose={() => setEditVisible(false)}
+      >
+        <KeyboardAvoidingView
+          style={styles.modalOverlay}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        >
+          <TouchableOpacity
+            style={styles.modalBackdrop}
+            activeOpacity={1}
+            onPress={() => setEditVisible(false)}
+          >
+            <View style={styles.modalContent} onStartShouldSetResponder={() => true}>
+              <View style={styles.modalHeader}>
+                <Text style={styles.modalTitle}>Edit Profile</Text>
+                <TouchableOpacity onPress={() => setEditVisible(false)}>
+                  <Ionicons name="close" size={24} color={Colors.text} />
+                </TouchableOpacity>
+              </View>
+
+              <View style={styles.modalBody}>
+                <Text style={styles.fieldLabel}>Name</Text>
+                <TextInput
+                  style={styles.textInput}
+                  value={editName}
+                  onChangeText={setEditName}
+                  placeholder="Enter your name"
+                  placeholderTextColor={Colors.textMuted}
+                />
+
+                <Text style={styles.fieldLabel}>Phone Number</Text>
+                <TextInput
+                  style={styles.textInput}
+                  value={editPhone}
+                  onChangeText={setEditPhone}
+                  placeholder="Enter your phone number"
+                  placeholderTextColor={Colors.textMuted}
+                  keyboardType="phone-pad"
+                />
+              </View>
+
+              <View style={styles.modalFooter}>
+                <Button
+                  title="Cancel"
+                  onPress={() => setEditVisible(false)}
+                  variant="outline"
+                  style={styles.modalButton}
+                />
+                <Button
+                  title="Save"
+                  onPress={handleSaveProfile}
+                  loading={isSaving}
+                  style={styles.modalButton}
+                />
+              </View>
+            </View>
+          </TouchableOpacity>
+        </KeyboardAvoidingView>
+      </Modal>
     </ScrollView>
   );
 }
@@ -183,6 +288,11 @@ const styles = StyleSheet.create({
     fontSize: FontSize.sm,
     color: Colors.textSecondary,
     marginTop: 2,
+  },
+  editButton: {
+    padding: Spacing.sm,
+    borderRadius: BorderRadius.md,
+    backgroundColor: Colors.primary + '10',
   },
   activeChildContainer: {
     marginTop: Spacing.md,
@@ -263,5 +373,61 @@ const styles = StyleSheet.create({
     color: Colors.textMuted,
     textAlign: 'center',
     marginTop: Spacing.lg,
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'flex-end',
+  },
+  modalBackdrop: {
+    flex: 1,
+    backgroundColor: Colors.overlay,
+    justifyContent: 'flex-end',
+  },
+  modalContent: {
+    backgroundColor: Colors.surface,
+    borderTopLeftRadius: BorderRadius.xl,
+    borderTopRightRadius: BorderRadius.xl,
+    paddingBottom: Spacing.xl,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: Spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.borderLight,
+  },
+  modalTitle: {
+    fontSize: FontSize.lg,
+    fontWeight: '700',
+    color: Colors.text,
+  },
+  modalBody: {
+    padding: Spacing.md,
+  },
+  fieldLabel: {
+    fontSize: FontSize.sm,
+    fontWeight: '600',
+    color: Colors.text,
+    marginBottom: Spacing.xs,
+    marginTop: Spacing.sm,
+  },
+  textInput: {
+    backgroundColor: Colors.surfaceVariant,
+    borderRadius: BorderRadius.md,
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.sm + 4,
+    fontSize: FontSize.md,
+    color: Colors.text,
+    borderWidth: 1,
+    borderColor: Colors.border,
+  },
+  modalFooter: {
+    flexDirection: 'row',
+    gap: Spacing.sm,
+    paddingHorizontal: Spacing.md,
+  },
+  modalButton: {
+    flex: 1,
   },
 });

@@ -95,7 +95,7 @@ export default function ChatScreen() {
             isOwn ? styles.ownMessageTime : styles.otherMessageTime,
           ]}
         >
-          {formatTime(item.createdAt || item.timestamp)}
+          {formatTime(item.createdAt || item.created_at || item.timestamp)}
         </Text>
       </View>
     );

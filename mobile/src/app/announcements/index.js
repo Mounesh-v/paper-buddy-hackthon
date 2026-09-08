@@ -30,8 +30,9 @@ export default function AnnouncementsScreen() {
   const loadData = useCallback(async () => {
     try {
       setError(null);
-      const data = await announcementService.getAnnouncements();
-      setAnnouncements(Array.isArray(data) ? data : data?.content || []);
+      const result = await announcementService.getAnnouncements();
+      const data = result?.data ?? result;
+      setAnnouncements(Array.isArray(data) ? data : []);
     } catch (err) {
       setError(err.message || 'Failed to load announcements');
     } finally {
@@ -129,7 +130,7 @@ export default function AnnouncementsScreen() {
                     </Text>
                   </View>
                   <Text style={styles.date}>
-                    {getTimeAgo(announcement.publishDate || announcement.createdAt)}
+                    {getTimeAgo(announcement.publishDate || announcement.publish_date || announcement.createdAt || announcement.created_at)}
                   </Text>
                 </View>
 

@@ -118,10 +118,14 @@ export default function AcademicsScreen() {
               </View>
             </View>
 
-            {academics.remark && (
+            {(academics.remark || academics.remarks?.length > 0) && (
               <View style={styles.remarkContainer}>
                 <Text style={styles.remarkLabel}>Teacher's Remark:</Text>
-                <Text style={styles.remarkText}>{academics.remark}</Text>
+                {academics.remark
+                  ? <Text style={styles.remarkText}>{academics.remark}</Text>
+                  : academics.remarks.map((remark, index) => (
+                      <Text key={index} style={styles.remarkText}>• {remark}</Text>
+                    ))}
               </View>
             )}
           </Card>

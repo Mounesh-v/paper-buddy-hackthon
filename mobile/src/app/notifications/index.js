@@ -30,8 +30,9 @@ export default function NotificationsScreen() {
   const loadData = useCallback(async () => {
     try {
       setError(null);
-      const data = await notificationService.getNotifications();
-      setNotifications(Array.isArray(data) ? data : data?.content || []);
+      const result = await notificationService.getNotifications();
+      const data = result?.data ?? result;
+      setNotifications(Array.isArray(data) ? data : []);
     } catch (err) {
       setError(err.message || 'Failed to load notifications');
     } finally {
@@ -47,6 +48,17 @@ export default function NotificationsScreen() {
   const handleRefresh = () => {
     setIsRefreshing(true);
     loadData();
+  };
+
+  const handleMarkAllAsRead = async () => {
+    try {
+      await notificationService.markAllAsRead();
+      setNotifications((prev) =>
+        prev.map((n) => ({ ...n, is_read: true }))
+      );
+    } catch {
+      // Silently fail
+    }
   };
 
   const handleMarkAsRead = async (notification) => {
@@ -107,7 +119,7 @@ export default function NotificationsScreen() {
   const handlePress = (notification) => {
     handleMarkAsRead(notification);
 
-    if (notification.type && notification.referenceId) {
+    if (notification.type && (notification.reference_id || notification.referenceId)) {
       switch (notification.type) {
         case 'ATTENDANCE':
           router.push('/attendance');
@@ -133,6 +145,8 @@ export default function NotificationsScreen() {
       }
     }
   };
+
+  const unreadCount = notifications.filter((n) => !n.is_read).length;
 
   const renderNotification = ({ item }) => (
     <TouchableOpacity
@@ -164,7 +178,7 @@ export default function NotificationsScreen() {
           {item.message || item.description}
         </Text>
         <Text style={styles.notificationTime}>
-          {getTimeAgo(item.createdAt || item.timestamp)}
+          {getTimeAgo(item.createdAt || item.created_at || item.timestamp)}
         </Text>
       </View>
 
@@ -185,6 +199,8 @@ export default function NotificationsScreen() {
       <Header
         title="Notifications"
         onBack={() => router.back()}
+        rightAction={unreadCount > 0 ? handleMarkAllAsRead : undefined}
+        rightIcon="checkmark-done-outline"
       />
 
       {notifications.length === 0 ? (

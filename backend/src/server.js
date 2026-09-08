@@ -12,6 +12,15 @@ const errorHandler = require('./middleware/errorHandler');
 const app = express();
 const PORT = process.env.PORT || 8080;
 
+// Safety nets: keep the server alive and logging instead of crashing on
+// transient DB/network failures during development.
+process.on('unhandledRejection', (reason) => {
+  console.error('[server] Unhandled rejection:', reason);
+});
+process.on('uncaughtException', (err) => {
+  console.error('[server] Uncaught exception:', err.message);
+});
+
 // Middleware
 app.use(helmet());
 app.use(cors());

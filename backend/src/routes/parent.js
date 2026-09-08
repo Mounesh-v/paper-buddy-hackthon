@@ -18,6 +18,7 @@ router.use(authorize('PARENT'));
 
 // Profile & Children
 router.get('/me', parentController.getProfile);
+router.put('/me', parentController.updateProfile);
 router.get('/children', parentController.getChildren);
 router.get('/children/:studentId', parentController.getChild);
 router.get('/dashboard', parentController.getDashboard);
@@ -50,11 +51,12 @@ router.get('/announcements/:announcementId', announcementController.getAnnouncem
 
 // Notifications
 router.get('/notifications', notificationController.getNotifications);
-router.patch('/notifications/:notificationId/read', notificationController.markAsRead);
 router.patch('/notifications/read-all', notificationController.markAllAsRead);
+router.patch('/notifications/:notificationId/read', notificationController.markAsRead);
 
 // Messages
 router.get('/conversations', messageController.getConversations);
+router.get('/conversations/teachers', messageController.getTeachers);
 router.post('/conversations', messageController.createConversation);
 router.get('/conversations/:conversationId/messages', messageController.getMessages);
 router.post('/conversations/:conversationId/messages', messageController.sendMessage);
