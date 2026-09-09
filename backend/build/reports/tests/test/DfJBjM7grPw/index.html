@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - com.scholaros.homework.controller.CurriculumControllerTest</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<div class="breadcrumbs">
+<a class="breadcrumb" href="../index.html">all</a> &gt; 
+<span class="breadcrumb">com.scholaros.homework.controller.CurriculumControllerTest</span>
+</div>
+<div class="tab-container">
+<ul class="tabLinks">
+<li>
+<a class="successGroup" href="#">Gradle Test Run :test</a>
+</li>
+</ul>
+<div class="tab">
+<h2>Gradle Test Run :test</h2>
+<h1>CurriculumControllerTest</h1>
+<div class="tab-container">
+<ul class="tabLinks">
+<li>
+<a class="" href="#">summary</a>
+</li>
+<li>
+<a class="" href="#">standard output</a>
+</li>
+</ul>
+<div class="tab">
+<h2>summary</h2>
+<div>
+<div class="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox">
+<div class="counter">2</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox">
+<div class="counter">0</div>
+<p>skipped</p>
+</div>
+</td>
+<td>
+<div class="infoBox duration">
+<div class="counter">1.707s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<table class="test-results">
+<thead>
+<tr>
+<th>Child</th>
+<th>Name</th>
+<th>Tests</th>
+<th>Failures</th>
+<th>Skipped</th>
+<th>Duration</th>
+<th>Success rate</th>
+</tr>
+</thead>
+<tr>
+<td class="success">
+<a href="_7ntdEE-3fE.html">POST /api/v1/curricula should create curriculum</a>
+</td>
+<td class="path">shouldCreateCurriculum()</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0.046s</td>
+<td class="success">100%</td>
+</tr>
+<tr>
+<td class="success">
+<a href="c7Yyn0dmRLk.html">GET /api/v1/curricula/board/{boardId} should return curricula for board</a>
+</td>
+<td class="path">shouldGetCurriculaByBoard()</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0.060s</td>
+<td class="success">100%</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="tab">
+<h2>standard output</h2>
+<span class="code">
+<pre id="root-0-test-stdout-com.scholaros.homework.controller.CurriculumControllerTest">2026-09-01 11:36:44.430 [Test worker] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.scholaros.homework.controller.CurriculumControllerTest]: CurriculumControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-01 11:36:44.458 [Test worker] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.scholaros.homework.ScholarosApplication for test class com.scholaros.homework.controller.CurriculumControllerTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.4.2)
+
+2026-09-01 11:36:44.553 [Test worker] INFO  c.s.h.c.CurriculumControllerTest - Starting CurriculumControllerTest using Java 21.0.12 with PID 24184 (started by vamsh in C:\Users\vamsh\OneDrive\Desktop\SmartEducation\backend)
+2026-09-01 11:36:44.553 [Test worker] DEBUG c.s.h.c.CurriculumControllerTest - Running with Spring Boot v3.4.2, Spring v6.2.2
+2026-09-01 11:36:44.554 [Test worker] INFO  c.s.h.c.CurriculumControllerTest - The following 1 profile is active: &quot;dev&quot;
+2026-09-01 11:36:45.670 [Test worker] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: 0274de84-9295-4f9e-9f1e-17ef25a3c462
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-09-01 11:36:45.676 [Test worker] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2026-09-01 11:36:45.996 [Test worker] DEBUG c.s.h.s.JwtAuthenticationFilter - Filter 'jwtAuthenticationFilter' configured for use
+2026-09-01 11:36:45.996 [Test worker] INFO  o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
+2026-09-01 11:36:45.996 [Test worker] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+2026-09-01 11:36:45.998 [Test worker] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 1 ms
+2026-09-01 11:36:46.017 [Test worker] INFO  c.s.h.c.CurriculumControllerTest - Started CurriculumControllerTest in 1.55 seconds (process running for 51.019)
+</pre>
+<button class="clipboard-copy-btn" aria-label="Copy to clipboard" data-copy-element-id="root-0-test-stdout-com.scholaros.homework.controller.CurriculumControllerTest">Copy</button>
+</span>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="https://www.gradle.org">Gradle 9.5.1</a> at 01-Sept-2026, 11:36:56 am</p>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.scholaros.homework.controller.HealthControllerTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-09-01T06:06:46.135Z" hostname="LAPTOP-34LGPI5U" time="1.318">
+  <properties/>
+  <testcase name="GET /api/v1/health should return status UP and service name" classname="com.scholaros.homework.controller.HealthControllerTest" time="0.027"/>
+  <system-out><![CDATA[2026-09-01 11:36:46.140 [Test worker] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.scholaros.homework.controller.HealthControllerTest]: HealthControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-01 11:36:46.171 [Test worker] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.scholaros.homework.ScholarosApplication for test class com.scholaros.homework.controller.HealthControllerTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.4.2)
+
+2026-09-01 11:36:46.272 [Test worker] INFO  c.s.h.c.HealthControllerTest - Starting HealthControllerTest using Java 21.0.12 with PID 24184 (started by vamsh in C:\Users\vamsh\OneDrive\Desktop\SmartEducation\backend)
+2026-09-01 11:36:46.272 [Test worker] DEBUG c.s.h.c.HealthControllerTest - Running with Spring Boot v3.4.2, Spring v6.2.2
+2026-09-01 11:36:46.273 [Test worker] INFO  c.s.h.c.HealthControllerTest - The following 1 profile is active: "dev"
+2026-09-01 11:36:47.174 [Test worker] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: 99e7116b-ea6e-47a9-8765-66b87460360c
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-09-01 11:36:47.176 [Test worker] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2026-09-01 11:36:47.410 [Test worker] DEBUG c.s.h.s.JwtAuthenticationFilter - Filter 'jwtAuthenticationFilter' configured for use
+2026-09-01 11:36:47.411 [Test worker] INFO  o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
+2026-09-01 11:36:47.411 [Test worker] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+2026-09-01 11:36:47.412 [Test worker] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 1 ms
+2026-09-01 11:36:47.423 [Test worker] INFO  c.s.h.c.HealthControllerTest - Started HealthControllerTest in 1.243 seconds (process running for 52.425)
+2026-09-01 11:36:47.438 [Test worker] INFO  c.s.h.controller.HealthController - Health check endpoint invoked
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

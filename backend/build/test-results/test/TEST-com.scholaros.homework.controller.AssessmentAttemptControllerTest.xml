@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.scholaros.homework.controller.AssessmentAttemptControllerTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-09-01T06:06:33.036Z" hostname="LAPTOP-34LGPI5U" time="3.811">
+  <properties/>
+  <testcase name="POST /api/v1/assessment-attempts/start should start assessment attempt" classname="com.scholaros.homework.controller.AssessmentAttemptControllerTest" time="0.814"/>
+  <testcase name="GET /api/v1/assessment-attempts/{id}/result should return result breakdown" classname="com.scholaros.homework.controller.AssessmentAttemptControllerTest" time="0.062"/>
+  <testcase name="POST /api/v1/assessment-attempts/{id}/submit should submit attempt" classname="com.scholaros.homework.controller.AssessmentAttemptControllerTest" time="0.057"/>
+  <system-out><![CDATA[2026-09-01 11:36:33.043 [Test worker] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.scholaros.homework.controller.AssessmentAttemptControllerTest]: AssessmentAttemptControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-01 11:36:33.090 [Test worker] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.scholaros.homework.ScholarosApplication for test class com.scholaros.homework.controller.AssessmentAttemptControllerTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.4.2)
+
+2026-09-01 11:36:33.240 [Test worker] INFO  c.s.h.c.AssessmentAttemptControllerTest - Starting AssessmentAttemptControllerTest using Java 21.0.12 with PID 24184 (started by vamsh in C:\Users\vamsh\OneDrive\Desktop\SmartEducation\backend)
+2026-09-01 11:36:33.241 [Test worker] DEBUG c.s.h.c.AssessmentAttemptControllerTest - Running with Spring Boot v3.4.2, Spring v6.2.2
+2026-09-01 11:36:33.242 [Test worker] INFO  c.s.h.c.AssessmentAttemptControllerTest - The following 1 profile is active: "dev"
+2026-09-01 11:36:35.230 [Test worker] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: 6770ef54-7d33-4dfa-a158-5f28d119f60f
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-09-01 11:36:35.235 [Test worker] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2026-09-01 11:36:35.863 [Test worker] DEBUG c.s.h.s.JwtAuthenticationFilter - Filter 'jwtAuthenticationFilter' configured for use
+2026-09-01 11:36:35.863 [Test worker] INFO  o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
+2026-09-01 11:36:35.864 [Test worker] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+2026-09-01 11:36:35.867 [Test worker] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 3 ms
+2026-09-01 11:36:35.894 [Test worker] INFO  c.s.h.c.AssessmentAttemptControllerTest - Started AssessmentAttemptControllerTest in 2.789 seconds (process running for 40.896)
+2026-09-01 11:36:36.647 [Test worker] INFO  c.s.h.c.AssessmentAttemptController - REST request to start assessment ID: 8ff31d3d-67c3-420b-8e25-20f92c756b41 for student ID: 8ef39c04-070f-45f1-b188-c24d938da57f
+2026-09-01 11:36:36.753 [Test worker] INFO  c.s.h.c.AssessmentAttemptController - REST request to get result for attempt ID: f17eb204-e9ce-4c89-adbe-2fcc3927a1c8
+2026-09-01 11:36:36.824 [Test worker] INFO  c.s.h.c.AssessmentAttemptController - REST request to submit assessment attempt ID: 0e085dd8-fe38-4b05-a910-09bdbdc58c2a
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

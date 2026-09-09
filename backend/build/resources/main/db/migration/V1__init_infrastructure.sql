@@ -1,0 +1,1 @@
+-- Initial Infrastructure Migration for ScholarOS Homework Intelligence Service

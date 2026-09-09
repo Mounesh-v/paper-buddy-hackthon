@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.scholaros.homework.controller.CurriculumControllerTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-09-01T06:06:44.425Z" hostname="LAPTOP-34LGPI5U" time="1.706">
+  <properties/>
+  <testcase name="GET /api/v1/curricula/board/{boardId} should return curricula for board" classname="com.scholaros.homework.controller.CurriculumControllerTest" time="0.06"/>
+  <testcase name="POST /api/v1/curricula should create curriculum" classname="com.scholaros.homework.controller.CurriculumControllerTest" time="0.046"/>
+  <system-out><![CDATA[2026-09-01 11:36:44.430 [Test worker] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.scholaros.homework.controller.CurriculumControllerTest]: CurriculumControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-01 11:36:44.458 [Test worker] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.scholaros.homework.ScholarosApplication for test class com.scholaros.homework.controller.CurriculumControllerTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.4.2)
+
+2026-09-01 11:36:44.553 [Test worker] INFO  c.s.h.c.CurriculumControllerTest - Starting CurriculumControllerTest using Java 21.0.12 with PID 24184 (started by vamsh in C:\Users\vamsh\OneDrive\Desktop\SmartEducation\backend)
+2026-09-01 11:36:44.553 [Test worker] DEBUG c.s.h.c.CurriculumControllerTest - Running with Spring Boot v3.4.2, Spring v6.2.2
+2026-09-01 11:36:44.554 [Test worker] INFO  c.s.h.c.CurriculumControllerTest - The following 1 profile is active: "dev"
+2026-09-01 11:36:45.670 [Test worker] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: 0274de84-9295-4f9e-9f1e-17ef25a3c462
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-09-01 11:36:45.676 [Test worker] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2026-09-01 11:36:45.996 [Test worker] DEBUG c.s.h.s.JwtAuthenticationFilter - Filter 'jwtAuthenticationFilter' configured for use
+2026-09-01 11:36:45.996 [Test worker] INFO  o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
+2026-09-01 11:36:45.996 [Test worker] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+2026-09-01 11:36:45.998 [Test worker] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 1 ms
+2026-09-01 11:36:46.017 [Test worker] INFO  c.s.h.c.CurriculumControllerTest - Started CurriculumControllerTest in 1.55 seconds (process running for 51.019)
+2026-09-01 11:36:46.051 [Test worker] INFO  c.s.h.c.CurriculumController - REST request to get curricula for boardId: 67659283-125b-4c95-8e4e-0978bc193c46
+2026-09-01 11:36:46.122 [Test worker] INFO  c.s.h.c.CurriculumController - REST request to create curriculum for boardId: 2a290cdc-76d7-46eb-a1fc-3ed62d99ce5c
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
