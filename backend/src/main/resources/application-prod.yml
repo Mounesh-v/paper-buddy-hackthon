@@ -9,6 +9,8 @@ spring:
       minimum-idle: ${HIKARI_MIN_IDLE:5}
       idle-timeout: ${HIKARI_IDLE_TIMEOUT:300000}
       connection-timeout: ${HIKARI_CONNECTION_TIMEOUT:20000}
+      connection-test-query: SELECT 1
+      leak-detection-threshold: 60000
   jpa:
     hibernate:
       ddl-auto: validate
@@ -25,3 +27,7 @@ logging:
   level:
     root: ${LOG_LEVEL_ROOT:WARN}
     com.scholaros.homework: ${LOG_LEVEL_APP:INFO}
+    com.zaxxer.hikari: INFO
+    org.flywaydb: INFO
+    org.hibernate.SQL: ${LOG_LEVEL_SQL:WARN}
+    org.hibernate.engine.jdbc.spi.SqlExceptionHelper: INFO
