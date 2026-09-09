@@ -9,7 +9,7 @@ exports.getAcademics = async (req, res, next) => {
     const access = await db('parent_students')
       .where({ parent_id: req.user.id, student_id: studentId })
       .first();
-
+console.log('Access check result:', access); // Debugging line
     if (!access) {
       return error(res, 'Access denied.', 403);
     }
