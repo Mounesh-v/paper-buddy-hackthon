@@ -13,9 +13,11 @@ spring:
 server:
   port: ${SERVER_PORT:${PORT:8080}}
   forward-headers-strategy: framework
+  address: 0.0.0.0
   error:
     include-stacktrace: never
     include-message: always
+    
 
 scholaros:
   ai:

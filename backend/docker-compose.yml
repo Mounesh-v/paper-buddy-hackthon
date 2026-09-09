@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  scholaros-db:
+    image: postgres:16-alpine
+    container_name: scholaros-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-scholaros}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-root123}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-scholaros}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - scholaros-network
+
+  homework-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: scholaros-homework-service
+    restart: unless-stopped
+    depends_on:
+      scholaros-db:
+        condition: service_healthy
+    ports:
+      - "${SERVER_PORT:-8080}:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-prod}
+      DATABASE_URL: jdbc:postgresql://scholaros-db:5432/${POSTGRES_DB:-scholaros}
+      DATABASE_USERNAME: ${POSTGRES_USER:-postgres}
+      DATABASE_PASSWORD: ${POSTGRES_PASSWORD:-root123}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-mock}
+      JWT_SECRET: ${JWT_SECRET:-dGhpc2lzYXNlY3JldGtleWZvcmp3dGF1dGhlbnRpY2F0aW9uaW5zY2hvbGFyb3NhcHBsaWNhdGlvbg==}
+      SERVER_PORT: 8080
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/actuator/health/liveness"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    networks:
+      - scholaros-network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  scholaros-network:
+    driver: bridge
